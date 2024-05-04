@@ -30,7 +30,7 @@ pipeline {
             steps {
                 // Push Docker image to Docker Hub or your container registry
                 script {
-                    docker.withRegistry('https://hub.docker.com/repository/docker/rajkiran123456/python_factorial_calculator', 'rajkiran123456') {
+                    docker.withRegistry('rajkiran123456/python_factorial_calculator', 'rajkiran123456') {
                         docker.image('factorial-calculator').push('latest')
                     }
                 }
