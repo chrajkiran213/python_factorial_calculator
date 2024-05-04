@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code from Git repository
+                git 'https://github.com/chrajkiran213/python_factorial_calculator.git' 
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build Docker image
+                script {
+                    docker.build('factorial-calculator')
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run tests inside the Docker container
+                script {
+                    docker.image('factorial-calculator').inside {
+                        sh 'python tests/test_factorial_calculator.py'
+                    }
+                }
+            }
+        }
+        stage('Push') {
+            steps {
+                // Push Docker image to Docker Hub or your container registry
+                script {
+                    docker.withRegistry('https://hub.docker.com/repository/docker/rajkiran123456/python_factorial_calculator', 'rajkiran123456') {
+                        docker.image('factorial-calculator').push('latest')
+                    }
+                }
+            }
+        }
+    }i
+}
